@@ -44,9 +44,25 @@ function shuffle(array) {
     MemoryGame.Init = function () {
         // (1) set up the event listener for a card. If a card is clicked:
         document.querySelector('.deck').addEventListener('click', function (e) {
-            console.log(e.target);
+            //console.log(e.target);
 
+            // Checks if e.target is a LI tag
+            if (e.target && e.target.nodeName === 'LI') {
+                // (2) display the card's symbol
+                // (put this functionality in another function that you call from this one)
+                MemoryGame.ShowCard(e.target);
+            }
         });
+    }
+
+    // (2) display the card's symbol
+    // (put this functionality in another function that you call from this one)
+    MemoryGame.ShowCard = function (element) {
+        element.classList.add('open', 'show');
+    }
+
+    MemoryGame.HideCard = function (element) {
+        element.classList.remove('open', 'show');
     }
 
     window.onload = MemoryGame.Init;
