@@ -12,7 +12,8 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -37,11 +38,15 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-(function () { 
+(function () {
     var MemoryGame = {};
 
-    MemoryGame.Init = function () { 
+    MemoryGame.Init = function () {
+        // (1) set up the event listener for a card. If a card is clicked:
+        document.querySelector('.deck').addEventListener('click', function (e) {
+            console.log(e.target);
 
+        });
     }
 
     window.onload = MemoryGame.Init;
