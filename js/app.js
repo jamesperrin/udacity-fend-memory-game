@@ -40,8 +40,11 @@ function shuffle(array) {
 (function () { 
     var MemoryGame = {};
 
-    
-    window.onload = MemoryGame;
+    MemoryGame.Init = function () { 
+
+    }
+
+    window.onload = MemoryGame.Init;
 
     return MemoryGame;
 }());
