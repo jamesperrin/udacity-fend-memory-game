@@ -1,33 +1,5 @@
 /*
- * Create a list that holds all of your cards
- */
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length,
-        temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
-
-/*
+ * Instructional guides:
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
@@ -41,6 +13,12 @@ function shuffle(array) {
 (function () {
     var MemoryGame = {};
 
+    /*
+     * Global variables
+     */
+    var MemoryGame = {};
+    var openedCardsList = []; // Create a list that holds all of your cards
+
     MemoryGame.Init = function () {
         // (1) set up the event listener for a card. If a card is clicked:
         document.querySelector('.deck').addEventListener('click', function (e) {
@@ -51,6 +29,10 @@ function shuffle(array) {
                 // (2) display the card's symbol
                 // (put this functionality in another function that you call from this one)
                 MemoryGame.ShowCard(e.target);
+
+                // (3) add the card to a *list* of "open" cards
+                // (put this functionality in another function that you call from this one)
+                MemoryGame.AddToOpenCards(e.target);
             }
         });
     }
@@ -63,6 +45,38 @@ function shuffle(array) {
 
     MemoryGame.HideCard = function (element) {
         element.classList.remove('open', 'show');
+    }
+
+    // (3) add the card to a *list* of "open" cards
+    // (put this functionality in another function that you call from this one)
+    MemoryGame.AddToOpenCards = function (element) {
+        if (openedCardsList.length < 2) {
+            openedCardsList.push(element);
+            //console.log(openedCardsList);
+        }
+    }
+
+    /**
+     * @description: Display the cards on the page
+     *   - shuffle the list of cards using the provided "shuffle" method below
+     *   - loop through each card and create its HTML
+     *   - add each card's HTML to the page 
+     * @see: Shuffle function from http: //stackoverflow.com/a/2450976
+     * @param {*} array 
+     */
+    MemoryGame.Shuffle = function (array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
     }
 
     window.onload = MemoryGame.Init;
