@@ -22,14 +22,31 @@
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Private functions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /**
+     * @description Helper function to show elements
+     */
     function sectionActive(element) {
         element.classList.add('active');
         element.classList.remove('hidden');
     }
 
+    /**
+     * @description Helper function to hidden elements
+     */
     function sectionHide(element) {
         element.classList.remove('active');
         element.classList.add('hidden');
+    }
+
+    /**
+     * @description Checks gameboard for orphaned open cards
+     */
+    function checkOpenedCardsList() {
+        const oCards = document.querySelectorAll('li.open');
+
+        oCards.forEach(function (el) {
+            MemoryGame.HideCard(el);
+        });
     }
 
     /**
@@ -139,6 +156,8 @@
             el.classList.add('match');
             MemoryGame.HideCard(el);
         });
+
+        checkOpenedCardsList();
     }
 
     /**
@@ -149,6 +168,8 @@
             console.log(el);
             MemoryGame.HideCard(el);
         });
+
+        checkOpenedCardsList();
     }
 
     /**
