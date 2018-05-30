@@ -71,8 +71,11 @@
         if (openedCardsList.length == 2) {
             setTimeout(function () {
                 if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
-                    // Do something
+                    // Checks if Player selected cards match
                     MemoryGame.OpenCardsDoMatch();
+
+                    // Checks if Play has won game
+                    MemoryGame.CheckHasWonGame();
                 } else {
                     // Do something
                     MemoryGame.OpenCardsNotMatch();
@@ -141,6 +144,17 @@
         function StarRating(element) {
             element.classList.add('fa-star-o');
             element.classList.remove('fa-star');
+        }
+    }
+
+    /**
+     * @description (9) if all cards have matched, display a message with the final score
+     */
+    MemoryGame.CheckHasWonGame = function () {
+        const matchedCards = document.querySelectorAll('li.match');
+
+        if (matchedCards.length >= 16) {
+            alert(`Congratulations!\nMoves: ${playerMovesCounter}\nRating: ${playerRatingCounter}`);
         }
     }
 
