@@ -46,7 +46,7 @@
     MemoryGame.HideCard = function (element) {
         element.classList.remove('open', 'show');
     }
-    
+
     /**
      * @description (3) add the card to a * list * of "open" cards
      * @param {*} element 
@@ -55,6 +55,25 @@
         if (openedCardsList.length < 2) {
             openedCardsList.push(element);
             //console.log(openedCardsList);
+        }
+    }
+
+    /**
+     * @description (4) if the list already has another card,
+     *                  check to see if the two cards match
+     */
+    MemoryGame.CheckOpenCardsList = function () {
+        if (openedCardsList.length == 2) {
+            setTimeout(function () {
+                if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
+                    // Do something
+                } else {
+                    // Do something
+                }
+
+                // Resets openedCardsList list Array
+                openedCardsList = [];
+            }, 600);
         }
     }
 
