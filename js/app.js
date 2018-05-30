@@ -27,18 +27,18 @@
             // Checks if e.target is a LI tag
             if (e.target && e.target.nodeName === 'LI') {
                 // (2) display the card's symbol
-                // (put this functionality in another function that you call from this one)
                 MemoryGame.ShowCard(e.target);
 
                 // (3) add the card to a *list* of "open" cards
-                // (put this functionality in another function that you call from this one)
                 MemoryGame.AddToOpenCards(e.target);
             }
         });
     }
 
-    // (2) display the card's symbol
-    // (put this functionality in another function that you call from this one)
+    /**
+     * @description (2) display the card's symbol
+     * @param {*} element 
+     */
     MemoryGame.ShowCard = function (element) {
         element.classList.add('open', 'show');
     }
@@ -46,9 +46,11 @@
     MemoryGame.HideCard = function (element) {
         element.classList.remove('open', 'show');
     }
-
-    // (3) add the card to a *list* of "open" cards
-    // (put this functionality in another function that you call from this one)
+    
+    /**
+     * @description (3) add the card to a * list * of "open" cards
+     * @param {*} element 
+     */
     MemoryGame.AddToOpenCards = function (element) {
         if (openedCardsList.length < 2) {
             openedCardsList.push(element);
