@@ -16,6 +16,8 @@
      */
     var MemoryGame = {};
     var openedCardsList = []; // Create a list that holds all of your cards
+    let playerMovesCounter = 0;
+    let playerRatingCounter = 3;
 
     MemoryGame.Init = function () {
         // (1) set up the event listener for a card. If a card is clicked:
@@ -79,6 +81,8 @@
                 // Resets openedCardsList list Array
                 openedCardsList = [];
             }, 600);
+
+            MemoryGame.HandlePlayerMoves();
         }
     }
 
@@ -100,6 +104,44 @@
             console.log(el);
             MemoryGame.HideCard(el);
         });
+    }
+
+    /**
+     * @description (7) increment the move counter and display it on the page
+     */
+    MemoryGame.HandlePlayerMoves = function () {
+        let movesSpan = document.querySelector('span.moves');
+        playerMovesCounter++;
+        movesSpan.textContent = playerMovesCounter;
+        MemoryGame.HandlePlayerRating();
+    }
+
+    /**
+     * @description  Change rating based on move counter and display it on the page
+     * @see: CSS: nth - child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
+     */
+    MemoryGame.HandlePlayerRating = function () {
+        if (playerMovesCounter == 12) { // 12
+            let firstStar = document.querySelector('ul.stars li:nth-child(1) i:nth-child(1)');
+            playerRatingCounter--;
+            StarRating(firstStar);
+        } else if (playerMovesCounter == 16) { // 16
+            let secondStar = document.querySelector('ul.stars li:nth-child(2) i:nth-child(1)');
+            StarRating(secondStar);
+            playerRatingCounter--;
+        } else if (playerMovesCounter == 18) { // 18
+            let thirdStar = document.querySelector('ul.stars li:nth-child(3) i:nth-child(1)');
+            StarRating(thirdStar);
+            playerRatingCounter--;
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Local function to modify rating stars. - DRY/SOLID
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        function StarRating(element) {
+            element.classList.add('fa-star-o');
+            element.classList.remove('fa-star');
+        }
     }
 
     /**
