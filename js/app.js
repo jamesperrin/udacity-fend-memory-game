@@ -11,8 +11,6 @@
  */
 
 (function () {
-    var MemoryGame = {};
-
     /*
      * Global variables
      */
@@ -54,8 +52,13 @@
     MemoryGame.AddToOpenCards = function (element) {
         if (openedCardsList.length < 2) {
             openedCardsList.push(element);
-            //console.log(openedCardsList);
+
+            // DEBUG CODE
+            // console.log('AddToOpenCards:');
+            // console.log(openedCardsList);
         }
+
+        MemoryGame.CheckOpenCardsList();
     }
 
     /**
@@ -70,6 +73,7 @@
                     MemoryGame.OpenCardsDoMatch();
                 } else {
                     // Do something
+                    MemoryGame.OpenCardsNotMatch();
                 }
 
                 // Resets openedCardsList list Array
@@ -84,7 +88,17 @@
     MemoryGame.OpenCardsDoMatch = function () {
         openedCardsList.forEach(function (el) {
             el.classList.add('match');
-            hideCard(el);
+            MemoryGame.HideCard(el);
+        });
+    }
+
+    /**
+     * @description (6) if the cards do not match, remove the cards from the list and hide the card's symbol
+     */
+    MemoryGame.OpenCardsNotMatch = function () {
+        openedCardsList.forEach(function (el) {
+            console.log(el);
+            MemoryGame.HideCard(el);
         });
     }
 
