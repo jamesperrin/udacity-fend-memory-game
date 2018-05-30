@@ -67,6 +67,7 @@
             setTimeout(function () {
                 if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
                     // Do something
+                    MemoryGame.OpenCardsDoMatch();
                 } else {
                     // Do something
                 }
@@ -75,6 +76,16 @@
                 openedCardsList = [];
             }, 600);
         }
+    }
+
+    /**
+     * @description (5) if the cards do match, lock the cards in the open position
+     */
+    MemoryGame.OpenCardsDoMatch = function () {
+        openedCardsList.forEach(function (el) {
+            el.classList.add('match');
+            hideCard(el);
+        });
     }
 
     /**
