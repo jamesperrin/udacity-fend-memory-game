@@ -19,6 +19,45 @@
     let playerMovesCounter = 0;
     let playerRatingCounter = 3;
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Private functions
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    function sectionActive(element) {
+        element.classList.add('active');
+        element.classList.remove('hidden');
+    }
+
+    function sectionHide(element) {
+        element.classList.remove('active');
+        element.classList.add('hidden');
+    }
+
+    /**
+     * @description: Display the cards on the page
+     *   - shuffle the list of cards using the provided "shuffle" method below
+     *   - loop through each card and create its HTML
+     *   - add each card's HTML to the page 
+     * @see: Shuffle function from http: //stackoverflow.com/a/2450976
+     * @param {*} array 
+     */
+    function shuffle(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Public functions
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     MemoryGame.Init = function () {
         // (1) set up the event listener for a card. If a card is clicked:
         document.querySelector('.deck').addEventListener('click', function (e) {
@@ -33,6 +72,9 @@
                 MemoryGame.AddToOpenCards(e.target);
             }
         });
+
+        document.querySelector('.restart').addEventListener('click', MemoryGame.ResetGame);
+        document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
     }
 
     /**
@@ -154,31 +196,47 @@
         const matchedCards = document.querySelectorAll('li.match');
 
         if (matchedCards.length >= 16) {
-            alert(`Congratulations!\nMoves: ${playerMovesCounter}\nRating: ${playerRatingCounter}`);
+
+            const finalScoreModal = document.querySelector('.final-score-modal');
+            const playerMovesSpan = document.querySelector('.final-score-modal .player-moves span');
+            const playerRatingSpan = document.querySelector('.final-score-modal .player-rating span');
+            const cardDeck = document.querySelector('.deck');
+            const scorePanelStars = document.querySelector('.stars');
+
+            sectionHide(cardDeck);
+            sectionActive(finalScoreModal);
+
+            playerMovesSpan.textContent = playerMovesCounter;
+            playerRatingSpan.innerHTML = scorePanelStars.outerHTML;
         }
     }
 
     /**
-     * @description: Display the cards on the page
-     *   - shuffle the list of cards using the provided "shuffle" method below
-     *   - loop through each card and create its HTML
-     *   - add each card's HTML to the page 
-     * @see: Shuffle function from http: //stackoverflow.com/a/2450976
-     * @param {*} array 
+     * @description(10) Enable Player to Reset the game
      */
-    MemoryGame.Shuffle = function (array) {
-        var currentIndex = array.length,
-            temporaryValue, randomIndex;
+    MemoryGame.ResetGame = function () {
+        const cardsDeck = document.querySelector('ul.deck');
+        const gameboardElements = document.querySelectorAll('.deck li');
+        const starsElements = document.querySelectorAll('.stars li i');
+        const finalScoreModal = document.querySelector('.final-score-modal');
 
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
+        // Hides Final score modal
+        sectionHide(finalScoreModal);
+        sectionActive(cardsDeck);
 
-        return array;
+        // Reset gameboard
+        gameboardElements.forEach(function (el) {
+            el.classList.remove('open', 'match', 'show');
+        });
+
+        //Resets Star ratings
+        starsElements.forEach(function (el) {
+            el.classList.add('fa-star');
+            el.classList.remove('fa-star-o');
+        });
+
+        //Resets Moves counter
+        document.querySelector('.moves').textContent = 0;
     }
 
     window.onload = MemoryGame.Init;

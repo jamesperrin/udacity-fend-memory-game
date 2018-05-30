@@ -17,7 +17,8 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -36,6 +37,10 @@ h1 {
 /*
  * Styles for the deck of cards
  */
+
+ ul.deck.hidden{
+     display: none;
+ }
 
 .deck {
     width: 660px;
@@ -106,4 +111,55 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.final-score-modal {
+    /* position: absolute; */
+    background: #7FFFD4;
+    border-radius: 2%;
+    width: 500px;
+    height: 300px;
+}
+
+div.final-score-modal.hidden {
+    display: none;
+}
+
+div.final-score-modal.active {
+    display: block;
+}
+
+.final-score-modal section {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    padding: 5%;
+}
+
+.final-score-modal h1 {
+    text-align: center;
+}
+
+.final-score-modal ul {
+    width: 50%;
+    margin: 10% 10% 10% 20%;
+}
+
+.final-score-modal button {
+    font-size: 1.25em;
+    margin-left: 25%;
+    border-radius: 5%;
+    padding: 2%;
+}
+
+.final-score-modal .player-rating .stars {
+    padding: 0;
+    margin: 0;
+    width: auto;
+    list-style: none;
+    display: inline-block;
+}
+
+.final-score-modal .player-rating .stars li {
+    display: inline-block;
 }
