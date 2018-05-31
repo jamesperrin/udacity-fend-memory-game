@@ -22,6 +22,8 @@ body {
     font-family: 'Coda', cursive;
 }
 
+
+
 .container {
     display: flex;
     justify-content: center;
@@ -37,11 +39,6 @@ h1 {
 /*
  * Styles for the deck of cards
  */
-
- ul.deck.hidden{
-     display: none;
- }
-
 .deck {
     width: 660px;
     min-height: 680px;
@@ -113,20 +110,16 @@ h1 {
     cursor: pointer;
 }
 
+/*
+ * Styles for the final score modal
+ */
+
 .final-score-modal {
-    /* position: absolute; */
+    display: block;
     background: #7FFFD4;
     border-radius: 2%;
     width: 500px;
     height: 300px;
-}
-
-div.final-score-modal.hidden {
-    display: none;
-}
-
-div.final-score-modal.active {
-    display: block;
 }
 
 .final-score-modal section {
@@ -162,4 +155,8 @@ div.final-score-modal.active {
 
 .final-score-modal .player-rating .stars li {
     display: inline-block;
+}
+
+.hidden {
+    display: none;
 }

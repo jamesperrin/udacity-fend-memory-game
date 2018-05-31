@@ -26,7 +26,6 @@
      * @description Helper function to show elements
      */
     function sectionActive(element) {
-        element.classList.add('active');
         element.classList.remove('hidden');
     }
 
@@ -34,7 +33,6 @@
      * @description Helper function to hidden elements
      */
     function sectionHide(element) {
-        element.classList.remove('active');
         element.classList.add('hidden');
     }
 
