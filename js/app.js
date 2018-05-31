@@ -39,10 +39,10 @@
     /**
      * @description Checks gameboard for orphaned open cards
      */
-    function checkOpenedCardsList() {
-        const oCards = document.querySelectorAll('li.open');
+    function checkOrphanedOpenedCards() {
+        const orphanedOpenCards = document.querySelectorAll('li.open');
 
-        oCards.forEach(function (el) {
+        orphanedOpenCards.forEach(function (el) {
             MemoryGame.HideCard(el);
         });
     }
@@ -155,7 +155,7 @@
             MemoryGame.HideCard(el);
         });
 
-        checkOpenedCardsList();
+        checkOrphanedOpenedCards();
     }
 
     /**
@@ -167,7 +167,7 @@
             MemoryGame.HideCard(el);
         });
 
-        checkOpenedCardsList();
+        checkOrphanedOpenedCards();
     }
 
     /**
