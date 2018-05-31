@@ -255,7 +255,8 @@
         });
 
         //Resets Moves counter
-        document.querySelector('.moves').textContent = 0;
+        playerMovesCounter = 0;
+        document.querySelector('.moves').textContent = playerMovesCounter;
     }
 
     window.onload = MemoryGame.Init;
