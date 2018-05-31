@@ -39,7 +39,7 @@
     }
 
     /**
-     * @description Checks gameboard for orphaned open cards
+     * @description Helper function to check gameboard for orphaned opened cards
      */
     function checkOrphanedOpenedCards() {
         const orphanedOpenCards = document.querySelectorAll('li.open');
@@ -54,7 +54,7 @@
      *   - shuffle the list of cards using the provided "shuffle" method below
      *   - loop through each card and create its HTML
      *   - add each card's HTML to the page 
-     * @see: Shuffle function from http: //stackoverflow.com/a/2450976
+     * @see: Shuffle function from http://stackoverflow.com/a/2450976
      * @param {*} array 
      */
     function shuffle(array) {
@@ -94,19 +94,20 @@
         document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
 
         MemoryGame.LoadCardDeck();
-
     }
 
-
-
     /**
-     * @description (2) display the card's symbol
+     * @description (2) Display the card's symbol
      * @param {*} element 
      */
     MemoryGame.ShowCard = function (element) {
         element.classList.add('open', 'show');
     }
 
+    /**
+     * @description Hides the card's symbol
+     * @param {*} element 
+     */
     MemoryGame.HideCard = function (element) {
         element.classList.remove('open', 'show');
     }
@@ -118,30 +119,26 @@
     MemoryGame.AddToOpenCards = function (element) {
         if (openedCardsList.length < 2) {
             openedCardsList.push(element);
-
-            // DEBUG CODE
-            // console.log('AddToOpenCards:');
-            // console.log(openedCardsList);
-
             MemoryGame.CheckOpenCardsList();
         }
     }
 
     /**
-     * @description (4) if the list already has another card,
+     * @description (4) If the list already has another card,
      *                  check to see if the two cards match
      */
     MemoryGame.CheckOpenCardsList = function () {
         if (openedCardsList.length == 2) {
             setTimeout(function () {
+                // Checks if Player selected cards match
                 if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
-                    // Checks if Player selected cards match
+                    // Handles when cards do match
                     MemoryGame.OpenCardsDoMatch();
 
                     // Checks if Play has won game
                     MemoryGame.CheckHasWonGame();
                 } else {
-                    // Do something
+                    // Handles when cards don't match
                     MemoryGame.OpenCardsNotMatch();
                 }
 
@@ -149,6 +146,7 @@
                 openedCardsList = [];
             }, 600);
 
+            // Handles player moves
             MemoryGame.HandlePlayerMoves();
         }
     }
@@ -189,7 +187,7 @@
 
     /**
      * @description  Change rating based on move counter and display it on the page
-     * @see: CSS: nth - child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
+     * @see: CSS: nth-child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
      */
     MemoryGame.HandlePlayerRating = function () {
         if (playerMovesCounter == 12) { // 12
@@ -222,7 +220,6 @@
         const matchedCards = document.querySelectorAll('li.match');
 
         if (matchedCards.length >= 16) {
-
             const finalScoreModal = document.querySelector('.final-score-modal');
             const playerMovesSpan = document.querySelector('.final-score-modal .player-moves span');
             const playerRatingSpan = document.querySelector('.final-score-modal .player-rating span');
@@ -257,7 +254,7 @@
             el.classList.remove('fa-star-o');
         });
 
-        //Resets Moves counter
+        //Resets
         playerMovesCounter = 0;
         document.querySelector('.moves').textContent = playerMovesCounter;
         document.querySelector('.final-score-modal .player-moves span').textContent = '';
@@ -272,11 +269,11 @@
      */
     MemoryGame.LoadCardDeck = function () {
         //DEBUGGING
-        const gameboardElements = document.querySelectorAll('.deck li');
-        gameboardElements.forEach(function (el) {
-            el.classList.remove('open', 'match', 'show');
-        });
-        return;
+        // const gameboardElements = document.querySelectorAll('.deck li');
+        // gameboardElements.forEach(function (el) {
+        //     el.classList.remove('open', 'match', 'show');
+        // });
+        // return;
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
