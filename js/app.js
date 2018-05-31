@@ -219,7 +219,7 @@
     MemoryGame.CheckHasWonGame = function () {
         const matchedCards = document.querySelectorAll('li.match');
 
-        if (matchedCards.length >= 16) {
+        if (matchedCards.length === cardsList.length) {
             const finalScoreModal = document.querySelector('.final-score-modal');
             const playerMovesSpan = document.querySelector('.final-score-modal .player-moves span');
             const playerRatingSpan = document.querySelector('.final-score-modal .player-rating span');
@@ -269,11 +269,11 @@
      */
     MemoryGame.LoadCardDeck = function () {
         //DEBUGGING
-        // const gameboardElements = document.querySelectorAll('.deck li');
-        // gameboardElements.forEach(function (el) {
-        //     el.classList.remove('open', 'match', 'show');
-        // });
-        // return;
+        const gameboardElements = document.querySelectorAll('.deck li');
+        gameboardElements.forEach(function (el) {
+            el.classList.remove('open', 'match', 'show');
+        });
+        return;
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
