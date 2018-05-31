@@ -14,8 +14,10 @@
     /*
      * Global variables
      */
-    var MemoryGame = {};
-    var openedCardsList = []; // Create a list that holds all of your cards
+    const MemoryGame = {};
+    const cardsList = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-cube', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+    const cardDeckGameboard = document.querySelector('.deck');
+    let openedCardsList = []; // Create a list that holds all of your cards    
     let playerMovesCounter = 0;
     let playerRatingCounter = 3;
 
@@ -90,7 +92,12 @@
 
         document.querySelector('.restart').addEventListener('click', MemoryGame.ResetGame);
         document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
+
+        MemoryGame.LoadCardDeck();
+
     }
+
+
 
     /**
      * @description (2) display the card's symbol
@@ -115,9 +122,9 @@
             // DEBUG CODE
             // console.log('AddToOpenCards:');
             // console.log(openedCardsList);
-        }
 
-        MemoryGame.CheckOpenCardsList();
+            MemoryGame.CheckOpenCardsList();
+        }
     }
 
     /**
@@ -163,7 +170,7 @@
      */
     MemoryGame.OpenCardsNotMatch = function () {
         openedCardsList.forEach(function (el) {
-            console.log(el);
+            //console.log(el);
             MemoryGame.HideCard(el);
         });
 
@@ -219,10 +226,10 @@
             const finalScoreModal = document.querySelector('.final-score-modal');
             const playerMovesSpan = document.querySelector('.final-score-modal .player-moves span');
             const playerRatingSpan = document.querySelector('.final-score-modal .player-rating span');
-            const cardDeck = document.querySelector('.deck');
+
             const scorePanelStars = document.querySelector('.stars');
 
-            sectionHide(cardDeck);
+            sectionHide(cardDeckGameboard);
             sectionActive(finalScoreModal);
 
             playerMovesSpan.textContent = playerMovesCounter;
@@ -231,22 +238,18 @@
     }
 
     /**
-     * @description(10) Enable Player to Reset the game
+     * @description (10) Enable Player to Reset the game
      */
     MemoryGame.ResetGame = function () {
-        const cardsDeck = document.querySelector('ul.deck');
-        const gameboardElements = document.querySelectorAll('.deck li');
         const starsElements = document.querySelectorAll('.stars li i');
         const finalScoreModal = document.querySelector('.final-score-modal');
 
+        // Reset gameboard: Clears and Shuffles card deck
+        MemoryGame.LoadCardDeck();
+
         // Hides Final score modal
         sectionHide(finalScoreModal);
-        sectionActive(cardsDeck);
-
-        // Reset gameboard
-        gameboardElements.forEach(function (el) {
-            el.classList.remove('open', 'match', 'show');
-        });
+        sectionActive(cardDeckGameboard);
 
         //Resets Star ratings
         starsElements.forEach(function (el) {
@@ -257,6 +260,42 @@
         //Resets Moves counter
         playerMovesCounter = 0;
         document.querySelector('.moves').textContent = playerMovesCounter;
+        document.querySelector('.final-score-modal .player-moves span').textContent = '';
+        document.querySelector('.final-score-modal .player-rating span').textContent = '';
+    }
+
+    /**
+     * @description Clears, Shuffles and Loads card deck.
+     * @see
+     *  https: //davidwalsh.name/documentfragment
+     *  https: //developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
+     */
+    MemoryGame.LoadCardDeck = function () {
+        //DEBUGGING
+        const gameboardElements = document.querySelectorAll('.deck li');
+        gameboardElements.forEach(function (el) {
+            el.classList.remove('open', 'match', 'show');
+        });
+        return;
+
+        // Clears card deck
+        cardDeckGameboard.innerHTML = '';
+
+        // Shuffles card deck
+        shuffle(cardsList);
+
+        // Creates a temporary container
+        let tempElement = document.createDocumentFragment();
+
+        for (let i = 0; i < cardsList.length; i++) {
+            let li = document.createElement("li");
+            li.classList.add('card');
+            li.innerHTML = `<i class="fa ${cardsList[i]}"></i>`;
+            tempElement.appendChild(li);
+        }
+
+        // Loads cards
+        cardDeckGameboard.appendChild(tempElement);
     }
 
     window.onload = MemoryGame.Init;
