@@ -190,15 +190,15 @@
      * @see: CSS: nth-child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
      */
     MemoryGame.HandlePlayerRating = function () {
-        if (playerMovesCounter == 12) { // 12
+        if (playerMovesCounter === 14) { // 14 - 75%
             let firstStar = document.querySelector('ul.stars li:nth-child(1) i:nth-child(1)');
             playerRatingCounter--;
             StarRating(firstStar);
-        } else if (playerMovesCounter == 16) { // 16
+        } else if (playerMovesCounter === 18) { // 18 - 125%
             let secondStar = document.querySelector('ul.stars li:nth-child(2) i:nth-child(1)');
             StarRating(secondStar);
             playerRatingCounter--;
-        } else if (playerMovesCounter == 18) { // 18
+        } else if (playerMovesCounter === 22) { // 22 - 175%
             let thirdStar = document.querySelector('ul.stars li:nth-child(3) i:nth-child(1)');
             StarRating(thirdStar);
             playerRatingCounter--;
