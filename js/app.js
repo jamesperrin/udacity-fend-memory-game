@@ -10,6 +10,10 @@
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+
+
+
+
 (function () {
     /*
      * Global variables
@@ -20,6 +24,10 @@
     let openedCardsList = []; // Create a list that holds all of your cards    
     let playerMovesCounter = 0;
     let playerRatingCounter = 3;
+    let timerInterval = null;
+    let timerCounter = 0;
+    let timerMinutes = 0;
+    let timerSeconds = 0;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Private functions
@@ -94,7 +102,11 @@
         document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
 
         MemoryGame.LoadCardDeck();
+
+        MemoryGame.GameTimer(true);
     }
+
+
 
     /**
      * @description (2) Display the card's symbol
@@ -220,17 +232,24 @@
         const matchedCards = document.querySelectorAll('li.match');
 
         if (matchedCards.length === cardsList.length) {
+            //Stops Game Timer
+            MemoryGame.GameTimer(false);
+
             const finalScoreModal = document.querySelector('.final-score-modal');
-            const playerMovesSpan = document.querySelector('.final-score-modal .player-moves span');
-            const playerRatingSpan = document.querySelector('.final-score-modal .player-rating span');
+            const finalScoreMovesSpan = document.querySelector('.final-score-moves span');
+            const finalScoreRatingSpan = document.querySelector('.final-score-rating span');
+            const finalScoreTimeSpan = document.querySelector('.final-score-time span');
 
             const scorePanelStars = document.querySelector('.stars');
+            const timerMintuesSpan = document.querySelector('.timer-minutes');
+            const timerSecondsSpan = document.querySelector('.timer-seconds');
 
             sectionHide(cardDeckGameboard);
             sectionActive(finalScoreModal);
 
-            playerMovesSpan.textContent = playerMovesCounter;
-            playerRatingSpan.innerHTML = scorePanelStars.outerHTML;
+            finalScoreMovesSpan.textContent = playerMovesCounter;
+            finalScoreRatingSpan.innerHTML = scorePanelStars.outerHTML;
+            finalScoreTimeSpan.textContent = `${timerMintuesSpan.textContent} ${timerSecondsSpan.textContent} `;
         }
     }
 
@@ -257,8 +276,43 @@
         //Resets
         playerMovesCounter = 0;
         document.querySelector('.moves').textContent = playerMovesCounter;
-        document.querySelector('.final-score-modal .player-moves span').textContent = '';
-        document.querySelector('.final-score-modal .player-rating span').textContent = '';
+        document.querySelector('.final-score-modal .final-score-moves span').textContent = '';
+        document.querySelector('.final-score-modal .final-score-rating span').textContent = '';
+        
+
+        // Stops Game Timer
+        MemoryGame.GameTimer(false);
+
+        // Reset Game Timer variables
+        timerCounter = 0
+        timerMinutes = 0;
+        timerSeconds = 0
+        document.querySelector('.timer-minutes').innerHTML = `00m`;
+        document.querySelector('.timer-seconds').innerHTML = `00s`;
+        
+        // Restarts Game Timer
+        MemoryGame.GameTimer(true);
+    }
+
+    /**
+     * @description Game timer
+     * @see
+     * https://www.w3schools.com/howto/howto_js_countdown.asp
+     * https://stackoverflow.com/questions/10935026/how-to-clear-interval-and-set-it-again
+     */
+    MemoryGame.GameTimer = function (runTimer) {
+        if (runTimer) {
+            timerInterval = setInterval(function () {
+                timerCounter++;
+                timerMinutes = Math.floor((timerCounter / 60));
+                timerSeconds = Math.floor((timerCounter % 60));
+                document.querySelector('.timer-minutes').innerHTML = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}m`;
+                document.querySelector('.timer-seconds').innerHTML = `${timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds}s`;
+            }, 1000);
+        }
+        else {
+            clearInterval(timerInterval);
+        }
     }
 
     /**

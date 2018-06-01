@@ -22,8 +22,6 @@ body {
     font-family: 'Coda', cursive;
 }
 
-
-
 .container {
     display: flex;
     justify-content: center;
@@ -39,6 +37,7 @@ h1 {
 /*
  * Styles for the deck of cards
  */
+
 .deck {
     width: 660px;
     min-height: 680px;
@@ -145,7 +144,7 @@ h1 {
     padding: 2%;
 }
 
-.final-score-modal .player-rating .stars {
+.final-score-rating .stars {
     padding: 0;
     margin: 0;
     width: auto;
@@ -153,7 +152,7 @@ h1 {
     display: inline-block;
 }
 
-.final-score-modal .player-rating .stars li {
+.final-score-rating .stars li {
     display: inline-block;
 }
 
