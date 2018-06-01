@@ -10,40 +10,45 @@
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-
-
-
-
 (function () {
+    'use strict';
+
     /*
      * Global variables
      */
     const MemoryGame = {};
     const cardsList = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-cube', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-paper-plane-o', 'fa-paper-plane-o'];
     const cardDeckGameboard = document.querySelector('.deck');
+    const finalScoreModal = document.querySelector('.final-score-modal');
+    const finalScoreMovesSpan = document.querySelector('.final-score-moves span');
+    const finalScoreRatingSpan = document.querySelector('.final-score-rating span');
+    const finalScoreTimeSpan = document.querySelector('.final-score-time span');
+    const timerMintuesSpan = document.querySelector('.timer-minutes');
+    const timerSecondsSpan = document.querySelector('.timer-seconds');
+    const playerMovesSpan = document.querySelector('span.moves');
     let openedCardsList = []; // Create a list that holds all of your cards    
     let playerMovesCounter = 0;
     let playerRatingCounter = 3;
     let timerInterval = null;
-    let timerCounter = 0;
+    let gameTimer = 0;
     let timerMinutes = 0;
     let timerSeconds = 0;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Private functions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    /**
-     * @description Helper function to show elements
-     */
-    function sectionActive(element) {
-        element.classList.remove('hidden');
-    }
 
     /**
-     * @description Helper function to hidden elements
+     * @description Helper function to hide HTML elements
+     * @param {boolean} doHide 
+     * @param {Object} htmlElement 
      */
-    function sectionHide(element) {
-        element.classList.add('hidden');
+    function sectionHide(doHide, htmlElement) {
+        if (doHide) {
+            htmlElement.classList.add('hidden');
+        } else {
+            htmlElement.classList.remove('hidden');
+        }
     }
 
     /**
@@ -63,7 +68,7 @@
      *   - loop through each card and create its HTML
      *   - add each card's HTML to the page 
      * @see: Shuffle function from http://stackoverflow.com/a/2450976
-     * @param {*} array 
+     * @param {array} array 
      */
     function shuffle(array) {
         var currentIndex = array.length,
@@ -85,9 +90,7 @@
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     MemoryGame.Init = function () {
         // (1) set up the event listener for a card. If a card is clicked:
-        document.querySelector('.deck').addEventListener('click', function (e) {
-            //console.log(e.target);
-
+        cardDeckGameboard.addEventListener('click', function (e) {
             // Checks if e.target is a LI tag
             if (e.target && e.target.nodeName === 'LI') {
                 // (2) display the card's symbol
@@ -101,36 +104,36 @@
         document.querySelector('.restart').addEventListener('click', MemoryGame.ResetGame);
         document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
 
+        // Populate HTML section with cards
         MemoryGame.LoadCardDeck();
 
+        // Starts Game Timer
         MemoryGame.GameTimer(true);
     }
 
-
-
     /**
      * @description (2) Display the card's symbol
-     * @param {*} element 
+     * @param {Object} htmlElement
      */
-    MemoryGame.ShowCard = function (element) {
-        element.classList.add('open', 'show');
+    MemoryGame.ShowCard = function (htmlElement) {
+        htmlElement.classList.add('open', 'show');
     }
 
     /**
      * @description Hides the card's symbol
-     * @param {*} element 
+     * @param {Object} htmlElement
      */
-    MemoryGame.HideCard = function (element) {
-        element.classList.remove('open', 'show');
+    MemoryGame.HideCard = function (htmlElement) {
+        htmlElement.classList.remove('open', 'show');
     }
 
     /**
      * @description (3) add the card to a * list * of "open" cards
-     * @param {*} element 
+     * @param {Object} htmlElement
      */
-    MemoryGame.AddToOpenCards = function (element) {
+    MemoryGame.AddToOpenCards = function (htmlElement) {
         if (openedCardsList.length < 2) {
-            openedCardsList.push(element);
+            openedCardsList.push(htmlElement);
             MemoryGame.CheckOpenCardsList();
         }
     }
@@ -140,7 +143,7 @@
      *                  check to see if the two cards match
      */
     MemoryGame.CheckOpenCardsList = function () {
-        if (openedCardsList.length == 2) {
+        if (openedCardsList.length === 2) {
             setTimeout(function () {
                 // Checks if Player selected cards match
                 if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
@@ -156,7 +159,7 @@
 
                 // Resets openedCardsList list Array
                 openedCardsList = [];
-            }, 600);
+            }, 500);
 
             // Handles player moves
             MemoryGame.HandlePlayerMoves();
@@ -180,7 +183,6 @@
      */
     MemoryGame.OpenCardsNotMatch = function () {
         openedCardsList.forEach(function (el) {
-            //console.log(el);
             MemoryGame.HideCard(el);
         });
 
@@ -191,9 +193,8 @@
      * @description (7) increment the move counter and display it on the page
      */
     MemoryGame.HandlePlayerMoves = function () {
-        let movesSpan = document.querySelector('span.moves');
         playerMovesCounter++;
-        movesSpan.textContent = playerMovesCounter;
+        playerMovesSpan.textContent = playerMovesCounter;
         MemoryGame.HandlePlayerRating();
     }
 
@@ -202,26 +203,24 @@
      * @see: CSS: nth-child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
      */
     MemoryGame.HandlePlayerRating = function () {
-        if (playerMovesCounter === 14) { // 14 - 75%
+        if (playerMovesCounter === 14) { //  75%
             let firstStar = document.querySelector('ul.stars li:nth-child(1) i:nth-child(1)');
-            playerRatingCounter--;
-            StarRating(firstStar);
-        } else if (playerMovesCounter === 18) { // 18 - 125%
+            StarRatingCounter(firstStar);
+        } else if (playerMovesCounter === 18) { // 125%
             let secondStar = document.querySelector('ul.stars li:nth-child(2) i:nth-child(1)');
-            StarRating(secondStar);
-            playerRatingCounter--;
-        } else if (playerMovesCounter === 22) { // 22 - 175%
+            StarRatingCounter(secondStar);
+        } else if (playerMovesCounter === 22) { // 175%
             let thirdStar = document.querySelector('ul.stars li:nth-child(3) i:nth-child(1)');
-            StarRating(thirdStar);
-            playerRatingCounter--;
+            StarRatingCounter(thirdStar);
         }
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Local function to modify rating stars. - DRY/SOLID
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        function StarRating(element) {
-            element.classList.add('fa-star-o');
-            element.classList.remove('fa-star');
+        function StarRatingCounter(htmlElement) {
+            htmlElement.classList.add('fa-star-o');
+            htmlElement.classList.remove('fa-star');
+            playerRatingCounter--;
         }
     }
 
@@ -235,20 +234,11 @@
             //Stops Game Timer
             MemoryGame.GameTimer(false);
 
-            const finalScoreModal = document.querySelector('.final-score-modal');
-            const finalScoreMovesSpan = document.querySelector('.final-score-moves span');
-            const finalScoreRatingSpan = document.querySelector('.final-score-rating span');
-            const finalScoreTimeSpan = document.querySelector('.final-score-time span');
-
-            const scorePanelStars = document.querySelector('.stars');
-            const timerMintuesSpan = document.querySelector('.timer-minutes');
-            const timerSecondsSpan = document.querySelector('.timer-seconds');
-
-            sectionHide(cardDeckGameboard);
-            sectionActive(finalScoreModal);
+            sectionHide(true, cardDeckGameboard);
+            sectionHide(false, finalScoreModal);
 
             finalScoreMovesSpan.textContent = playerMovesCounter;
-            finalScoreRatingSpan.innerHTML = scorePanelStars.outerHTML;
+            finalScoreRatingSpan.innerHTML = document.querySelector('.stars').outerHTML;
             finalScoreTimeSpan.textContent = `${timerMintuesSpan.textContent} ${timerSecondsSpan.textContent} `;
         }
     }
@@ -257,39 +247,37 @@
      * @description (10) Enable Player to Reset the game
      */
     MemoryGame.ResetGame = function () {
-        const starsElements = document.querySelectorAll('.stars li i');
-        const finalScoreModal = document.querySelector('.final-score-modal');
-
         // Reset gameboard: Clears and Shuffles card deck
         MemoryGame.LoadCardDeck();
 
         // Hides Final score modal
-        sectionHide(finalScoreModal);
-        sectionActive(cardDeckGameboard);
+        sectionHide(true, finalScoreModal);
+        sectionHide(false, cardDeckGameboard);
 
         //Resets Star ratings
+        const starsElements = document.querySelectorAll('.stars li i');
+
         starsElements.forEach(function (el) {
             el.classList.add('fa-star');
             el.classList.remove('fa-star-o');
         });
 
-        //Resets
+        // Resets
         playerMovesCounter = 0;
-        document.querySelector('.moves').textContent = playerMovesCounter;
-        document.querySelector('.final-score-modal .final-score-moves span').textContent = '';
-        document.querySelector('.final-score-modal .final-score-rating span').textContent = '';
-        
+        playerMovesSpan.textContent = playerMovesCounter;
+        finalScoreMovesSpan.textContent = '';
+        finalScoreRatingSpan.textContent = '';
 
         // Stops Game Timer
         MemoryGame.GameTimer(false);
 
         // Reset Game Timer variables
-        timerCounter = 0
+        gameTimer = 0
         timerMinutes = 0;
         timerSeconds = 0
-        document.querySelector('.timer-minutes').innerHTML = `00m`;
-        document.querySelector('.timer-seconds').innerHTML = `00s`;
-        
+        timerMintuesSpan.innerHTML = `00m`;
+        timerSecondsSpan.innerHTML = `00s`;
+
         // Restarts Game Timer
         MemoryGame.GameTimer(true);
     }
@@ -299,18 +287,18 @@
      * @see
      * https://www.w3schools.com/howto/howto_js_countdown.asp
      * https://stackoverflow.com/questions/10935026/how-to-clear-interval-and-set-it-again
+     * @param {boolean} runTimer Determines to run timer 
      */
     MemoryGame.GameTimer = function (runTimer) {
         if (runTimer) {
             timerInterval = setInterval(function () {
-                timerCounter++;
-                timerMinutes = Math.floor((timerCounter / 60));
-                timerSeconds = Math.floor((timerCounter % 60));
-                document.querySelector('.timer-minutes').innerHTML = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}m`;
-                document.querySelector('.timer-seconds').innerHTML = `${timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds}s`;
+                gameTimer++;
+                timerMinutes = Math.floor((gameTimer / 60));
+                timerSeconds = Math.floor((gameTimer % 60));
+                timerMintuesSpan.innerHTML = `${timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes}m`;
+                timerSecondsSpan.innerHTML = `${timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds}s`;
             }, 1000);
-        }
-        else {
+        } else {
             clearInterval(timerInterval);
         }
     }
@@ -323,11 +311,14 @@
      */
     MemoryGame.LoadCardDeck = function () {
         //DEBUGGING
-        const gameboardElements = document.querySelectorAll('.deck li');
-        gameboardElements.forEach(function (el) {
-            el.classList.remove('open', 'match', 'show');
-        });
-        return;
+        if (true) {
+            // Used for Debugging/Testing
+            const gameboardElements = document.querySelectorAll('.deck li');
+            gameboardElements.forEach(function (el) {
+                el.classList.remove('open', 'match', 'show');
+            });
+            return;
+        }
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
@@ -336,17 +327,17 @@
         shuffle(cardsList);
 
         // Creates a temporary container
-        let tempElement = document.createDocumentFragment();
+        let fragElement = document.createDocumentFragment();
 
-        for (let i = 0; i < cardsList.length; i++) {
+        for (let i = 0, len = cardsList.length; i < len; i++) {
             let li = document.createElement("li");
             li.classList.add('card');
             li.innerHTML = `<i class="fa ${cardsList[i]}"></i>`;
-            tempElement.appendChild(li);
+            fragElement.appendChild(li);
         }
 
         // Loads cards
-        cardDeckGameboard.appendChild(tempElement);
+        cardDeckGameboard.appendChild(fragElement);
     }
 
     window.onload = MemoryGame.Init;

@@ -104,6 +104,11 @@ h1 {
     display: inline-block;
 }
 
+.score-panel .timer {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 .score-panel .restart {
     float: right;
     cursor: pointer;
@@ -134,7 +139,7 @@ h1 {
 
 .final-score-modal ul {
     width: 50%;
-    margin: 10% 10% 10% 20%;
+    margin: 10%;
 }
 
 .final-score-modal button {
