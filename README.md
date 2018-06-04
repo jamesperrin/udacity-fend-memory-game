@@ -1,20 +1,24 @@
-# Memory Game Project
+# Udactiy Front-End Web Developer Nanodegree
 
-## Table of Contents
+## Project - Memory Game
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+### Table of Contents
 
-## Instructions
+* [Description](#Description)
+* [Dependencies](#Dependencies)
+* [Resources](#Resources)
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+### Description
 
-To get started, open `js/app.js` and start building out the app's functionality
+* This is Udacity's Memory Game Project that demonstrates a Student's mastery of HTML, CSS, and JavaScript.
+* The Student is provided with a starter project containing some HTML and CSS styling to display a static version of the Memory Game project.
+* The Student is responsible for adding game functionality and custom styling.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+### Dependencies
 
-## Contributing
+* Font awesome
+* Google Fonts (Comfortaa)
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+### Resources
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+* [Udacity Start Project](https://github.com/udacity/fend-project-memory-game)
