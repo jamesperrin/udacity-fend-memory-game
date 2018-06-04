@@ -10,7 +10,7 @@
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-(function () {
+( function () {
     'use strict';
 
     /*
@@ -72,10 +72,7 @@
      */
     function checkOrphanedOpenedCards() {
         const orphanedOpenCards = document.querySelectorAll('li.open');
-
-        orphanedOpenCards.forEach(function (el) {
-            MemoryGame.HideCard(el);
-        });
+        orphanedOpenCards.forEach(el => MemoryGame.HideCard(el) );
     }
 
     /**
@@ -128,8 +125,8 @@
     /**
      * @description Sets initial game features
      */
-    MemoryGame.Init = function () {
-        document.querySelector('.start').addEventListener('click', function (e) {
+    MemoryGame.Init = () => {
+        document.querySelector('.start').addEventListener('click',  e => {
             startButtonChange(startButtonState.start);
 
             MemoryGame.StartGame();
@@ -139,9 +136,9 @@
     /**
      * @description Starts Game play
      */
-    MemoryGame.StartGame = function () {
+    MemoryGame.StartGame = () => {
         // (1) set up the event listener for a card. If a card is clicked:
-        cardDeckGameboard.addEventListener('click', function (e) {
+        cardDeckGameboard.addEventListener('click', e => {
             // Checks if e.target is a LI tag
             if (e.target && e.target.nodeName === 'LI') {
                 // (2) display the card's symbol
@@ -166,23 +163,19 @@
      * @description (2) Display the card's symbol
      * @param {Object} htmlElement
      */
-    MemoryGame.ShowCard = function (htmlElement) {
-        htmlElement.classList.add('open', 'show');
-    }
-
+    MemoryGame.ShowCard = htmlElement => htmlElement.classList.add('open', 'show');
+    
     /**
      * @description Hides the card's symbol
      * @param {Object} htmlElement
      */
-    MemoryGame.HideCard = function (htmlElement) {
-        htmlElement.classList.remove('open', 'show');
-    }
-
+    MemoryGame.HideCard = htmlElement => htmlElement.classList.remove('open', 'show');
+    
     /**
      * @description (3) add the card to a * list * of "open" cards
      * @param {Object} htmlElement
      */
-    MemoryGame.AddToOpenCards = function (htmlElement) {
+    MemoryGame.AddToOpenCards = htmlElement => {
         if (openedCardsList.length < 2) {
             openedCardsList.push(htmlElement);
             MemoryGame.CheckOpenCardsList();
@@ -193,9 +186,9 @@
      * @description (4) If the list already has another card,
      *                  check to see if the two cards match
      */
-    MemoryGame.CheckOpenCardsList = function () {
+    MemoryGame.CheckOpenCardsList = () => {
         if (openedCardsList.length === 2) {
-            setTimeout(function () {
+            setTimeout(() => {
                 // Checks if Player selected cards match
                 if (openedCardsList[0].firstElementChild.classList.value === openedCardsList[1].firstElementChild.classList.value) {
                     // Handles when cards do match
@@ -220,8 +213,8 @@
     /**
      * @description (5) if the cards do match, lock the cards in the open position
      */
-    MemoryGame.OpenCardsDoMatch = function () {
-        openedCardsList.forEach(function (el) {
+    MemoryGame.OpenCardsDoMatch = () => {
+        openedCardsList.forEach(el => {
             el.classList.add('match');
             MemoryGame.HideCard(el);
         });
@@ -232,10 +225,8 @@
     /**
      * @description (6) if the cards do not match, remove the cards from the list and hide the card's symbol
      */
-    MemoryGame.OpenCardsNotMatch = function () {
-        openedCardsList.forEach(function (el) {
-            MemoryGame.HideCard(el);
-        });
+    MemoryGame.OpenCardsNotMatch = () => {
+        openedCardsList.forEach(el => MemoryGame.HideCard(el));
 
         checkOrphanedOpenedCards();
     }
@@ -243,7 +234,7 @@
     /**
      * @description (7) increment the move counter and display it on the page
      */
-    MemoryGame.HandlePlayerMoves = function () {
+    MemoryGame.HandlePlayerMoves = () => {
         playerMovesCounter++;
         playerMovesSpan.textContent = playerMovesCounter;
         MemoryGame.HandlePlayerRating();
@@ -253,7 +244,7 @@
      * @description  Change rating based on move counter and display it on the page
      * @see: CSS: nth-child() Selector - https: //www.w3schools.com/cssref/sel_nth-child.asp
      */
-    MemoryGame.HandlePlayerRating = function () {
+    MemoryGame.HandlePlayerRating = () => {
         if (playerMovesCounter === 14) { //  75%
             let firstStar = document.querySelector('ul.stars li:nth-child(1) i:nth-child(1)');
             StarRatingCounter(firstStar);
@@ -278,7 +269,7 @@
     /**
      * @description (9) if all cards have matched, display a message with the final score
      */
-    MemoryGame.CheckHasWonGame = function () {
+    MemoryGame.CheckHasWonGame = () => {
         const matchedCards = document.querySelectorAll('li.match');
 
         if (matchedCards.length === cardsList.length) {
@@ -297,7 +288,7 @@
     /**
      * @description (10) Enable Player to Reset the game
      */
-    MemoryGame.ResetGame = function () {
+    MemoryGame.ResetGame = () => {
         // Reset gameboard: Clears and Shuffles card deck
         MemoryGame.LoadCardDeck();
 
@@ -309,7 +300,7 @@
         //Resets Star ratings
         const starsElements = document.querySelectorAll('.stars li i');
 
-        starsElements.forEach(function (el) {
+        starsElements.forEach(el => {
             el.classList.add('fa-star');
             el.classList.remove('fa-star-o');
         });
@@ -341,9 +332,9 @@
      * https://stackoverflow.com/questions/10935026/how-to-clear-interval-and-set-it-again
      * @param {boolean} startTimer Determines to run timer
      */
-    MemoryGame.GameTimer = function (startTimer) {
+    MemoryGame.GameTimer = startTimer => {
         if (startTimer) {
-            timerInterval = setInterval(function () {
+            timerInterval = setInterval(() =>{
                 gameTimer++;
                 timerMinutes = Math.floor((gameTimer / 60));
                 timerSeconds = Math.floor((gameTimer % 60));
@@ -361,16 +352,16 @@
      *  https: //davidwalsh.name/documentfragment
      *  https: //developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
      */
-    MemoryGame.LoadCardDeck = function () {
+    MemoryGame.LoadCardDeck = () => {
         //DEBUGGING CODE
-        // if (true) {
-        //     // Used for Debugging/Testing
-        //     const gameboardElements = document.querySelectorAll('.deck li');
-        //     gameboardElements.forEach(function (el) {
-        //         el.classList.remove('open', 'match', 'show');
-        //     });
-        //     return;
-        // }
+        if (true) {
+            // Used for Debugging/Testing
+            const gameboardElements = document.querySelectorAll('.deck li');
+            gameboardElements.forEach(el => {
+                el.classList.remove('open', 'match', 'show');
+            });
+            return;
+        }
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
