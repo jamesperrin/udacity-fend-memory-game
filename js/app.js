@@ -10,7 +10,7 @@
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-( function () {
+(function () {
     'use strict';
 
     /*
@@ -72,7 +72,7 @@
      */
     function checkOrphanedOpenedCards() {
         const orphanedOpenCards = document.querySelectorAll('li.open');
-        orphanedOpenCards.forEach(el => MemoryGame.HideCard(el) );
+        orphanedOpenCards.forEach(el => MemoryGame.HideCard(el));
     }
 
     /**
@@ -126,7 +126,7 @@
      * @description Sets initial game features
      */
     MemoryGame.Init = () => {
-        document.querySelector('.start').addEventListener('click',  e => {
+        document.querySelector('.start').addEventListener('click', e => {
             startButtonChange(startButtonState.start);
 
             MemoryGame.StartGame();
@@ -164,13 +164,13 @@
      * @param {Object} htmlElement
      */
     MemoryGame.ShowCard = htmlElement => htmlElement.classList.add('open', 'show');
-    
+
     /**
      * @description Hides the card's symbol
      * @param {Object} htmlElement
      */
     MemoryGame.HideCard = htmlElement => htmlElement.classList.remove('open', 'show');
-    
+
     /**
      * @description (3) add the card to a * list * of "open" cards
      * @param {Object} htmlElement
@@ -334,7 +334,7 @@
      */
     MemoryGame.GameTimer = startTimer => {
         if (startTimer) {
-            timerInterval = setInterval(() =>{
+            timerInterval = setInterval(() => {
                 gameTimer++;
                 timerMinutes = Math.floor((gameTimer / 60));
                 timerSeconds = Math.floor((gameTimer % 60));
@@ -354,14 +354,14 @@
      */
     MemoryGame.LoadCardDeck = () => {
         //DEBUGGING CODE
-        if (true) {
-            // Used for Debugging/Testing
-            const gameboardElements = document.querySelectorAll('.deck li');
-            gameboardElements.forEach(el => {
-                el.classList.remove('open', 'match', 'show');
-            });
-            return;
-        }
+        // if (true) {
+        //     // Used for Debugging/Testing
+        //     const gameboardElements = document.querySelectorAll('.deck li');
+        //     gameboardElements.forEach(el => {
+        //         el.classList.remove('open', 'match', 'show');
+        //     });
+        //     return;
+        // }
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
@@ -372,10 +372,10 @@
         // Creates a temporary container
         let fragElement = document.createDocumentFragment();
 
-        for (let i = 0, len = cardsList.length; i < len; i++) {
+        for (let card in cardsList) {
             let li = document.createElement("li");
             li.classList.add('card');
-            li.innerHTML = `<i class="fa ${cardsList[i]}"></i>`;
+            li.innerHTML = `<i class="fa ${cardsList[card]}"></i>`;
             fragElement.appendChild(li);
         }
 
