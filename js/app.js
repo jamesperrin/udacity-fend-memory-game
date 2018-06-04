@@ -17,6 +17,11 @@
      * Global variables
      */
     const MemoryGame = {};
+    const startButtonState = {
+        'start': 'start',
+        'stop': 'stop'
+    };
+
     const cardsList = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-cube', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-paper-plane-o', 'fa-paper-plane-o'];
     const cardDeckGameboard = document.querySelector('.deck');
     const finalScoreModal = document.querySelector('.final-score-modal');
@@ -63,6 +68,26 @@
     }
 
     /**
+     * @description Helper function to change Start button state.
+     * @param {string} state 
+     */
+    function startButtonChange(state) {
+        const startButton = document.querySelector('.start i');
+
+        switch (state) {
+            case startButtonState.start:
+                startButton.classList.add('fa-play-circle-o');
+                startButton.classList.remove('fa-play-circle', 'fa-stop-circle');
+                break;
+
+            case startButtonState.stop:
+                startButton.classList.add('fa-stop-circle');
+                startButton.classList.remove('fa-play-circle-o', 'fa-play-circle');
+                break;
+        }
+    }
+
+    /**
      * @description: Display the cards on the page
      *   - shuffle the list of cards using the provided "shuffle" method below
      *   - loop through each card and create its HTML
@@ -88,7 +113,22 @@
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Public functions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    /**
+     * @description Sets initial game features
+     */
     MemoryGame.Init = function () {
+        document.querySelector('.start').addEventListener('click', function (e) {
+            startButtonChange(startButtonState.start);
+
+            MemoryGame.StartGame();
+        });
+    }
+
+    /**
+     * @description Starts Game play
+     */
+    MemoryGame.StartGame = function () {
         // (1) set up the event listener for a card. If a card is clicked:
         cardDeckGameboard.addEventListener('click', function (e) {
             // Checks if e.target is a LI tag
@@ -110,6 +150,7 @@
         // Starts Game Timer
         MemoryGame.GameTimer(true);
     }
+
 
     /**
      * @description (2) Display the card's symbol
@@ -233,7 +274,7 @@
         if (matchedCards.length === cardsList.length) {
             //Stops Game Timer
             MemoryGame.GameTimer(false);
-
+            startButtonChange(startButtonState.stop);
             sectionHide(true, cardDeckGameboard);
             sectionHide(false, finalScoreModal);
 
@@ -253,6 +294,7 @@
         // Hides Final score modal
         sectionHide(true, finalScoreModal);
         sectionHide(false, cardDeckGameboard);
+        startButtonChange(startButtonState.start);
 
         //Resets Star ratings
         const starsElements = document.querySelectorAll('.stars li i');
