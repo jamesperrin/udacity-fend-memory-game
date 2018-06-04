@@ -1,15 +1,3 @@
-/*
- * Instructional guides:
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
 (function () {
     'use strict';
 
@@ -42,6 +30,7 @@
     const timerMintuesSpan = document.querySelector('.timer-minutes');
     const timerSecondsSpan = document.querySelector('.timer-seconds');
     const playerMovesSpan = document.querySelector('span.moves');
+    const startButtonDiv = document.querySelector('.start');
     let openedCardsList = []; // Create a list that holds all of your cards    
     let playerMovesCounter = 0;
     let playerRatingCounter = 3;
@@ -67,6 +56,7 @@
         }
     }
 
+
     /**
      * @description Helper function to check gameboard for orphaned opened cards
      */
@@ -75,27 +65,29 @@
         orphanedOpenCards.forEach(el => MemoryGame.HideCard(el));
     }
 
+
     /**
      * @description Helper function to change Start button state.
      * @param {string} state 
      */
     function startButtonChange(state) {
-        const startButton = document.querySelector('.start i');
+        const startButtonIcon = document.querySelector('.start i');
 
         switch (state) {
             case startButtonState.start:
-                startButton.textContent = 'Started';
-                startButton.classList.add('fa-play-circle-o');
-                startButton.classList.remove('fa-play-circle', 'fa-stop-circle');
+                startButtonIcon.textContent = 'Started';
+                startButtonIcon.classList.add('fa-play-circle-o');
+                startButtonIcon.classList.remove('fa-play-circle', 'fa-stop-circle');
                 break;
 
             case startButtonState.stop:
-                startButton.textContent = 'Stopped';
-                startButton.classList.add('fa-stop-circle');
-                startButton.classList.remove('fa-play-circle-o', 'fa-play-circle');
+                startButtonIcon.textContent = 'Stopped';
+                startButtonIcon.classList.add('fa-stop-circle');
+                startButtonIcon.classList.remove('fa-play-circle-o', 'fa-play-circle');
                 break;
         }
     }
+
 
     /**
      * @description: Display the cards on the page
@@ -120,6 +112,15 @@
         return array;
     }
 
+
+    /**
+     * @description Helper function for intial start of game
+     */
+    function initStart() {
+        startButtonChange(startButtonState.start);
+        MemoryGame.StartGame();
+    }
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Public functions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -128,12 +129,9 @@
      * @description Sets initial game features
      */
     MemoryGame.Init = () => {
-        document.querySelector('.start').addEventListener('click', e => {
-            startButtonChange(startButtonState.start);
-
-            MemoryGame.StartGame();
-        });
+        startButtonDiv.addEventListener('click', initStart);
     }
+
 
     /**
      * @description Starts Game play
@@ -154,6 +152,9 @@
         document.querySelector('.restart').addEventListener('click', MemoryGame.ResetGame);
         document.querySelector('.final-score-modal section button').addEventListener('click', MemoryGame.ResetGame);
 
+        startButtonDiv.removeEventListener('click', initStart);
+        startButtonDiv.addEventListener('click', MemoryGame.ResetGame);
+
         // Populate HTML section with cards
         MemoryGame.LoadCardDeck();
 
@@ -161,17 +162,20 @@
         MemoryGame.GameTimer(gameTimerState.start);
     }
 
+
     /**
      * @description (2) Display the card's symbol
      * @param {Object} htmlElement
      */
     MemoryGame.ShowCard = htmlElement => htmlElement.classList.add('open', 'show');
 
+
     /**
      * @description Hides the card's symbol
      * @param {Object} htmlElement
      */
     MemoryGame.HideCard = htmlElement => htmlElement.classList.remove('open', 'show');
+
 
     /**
      * @description (3) add the card to a * list * of "open" cards
@@ -183,6 +187,7 @@
             MemoryGame.CheckOpenCardsList();
         }
     }
+
 
     /**
      * @description (4) If the list already has another card,
@@ -212,6 +217,7 @@
         }
     }
 
+
     /**
      * @description (5) if the cards do match, lock the cards in the open position
      */
@@ -224,6 +230,7 @@
         checkOrphanedOpenedCards();
     }
 
+
     /**
      * @description (6) if the cards do not match, remove the cards from the list and hide the card's symbol
      */
@@ -233,6 +240,7 @@
         checkOrphanedOpenedCards();
     }
 
+
     /**
      * @description (7) increment the move counter and display it on the page
      */
@@ -241,6 +249,7 @@
         playerMovesSpan.textContent = playerMovesCounter;
         MemoryGame.HandlePlayerRating();
     }
+
 
     /**
      * @description  Change rating based on move counter and display it on the page
@@ -268,6 +277,7 @@
         }
     }
 
+
     /**
      * @description (9) if all cards have matched, display a message with the final score
      */
@@ -286,6 +296,7 @@
             finalScoreTimeSpan.textContent = `${timerMintuesSpan.textContent} ${timerSecondsSpan.textContent} `;
         }
     }
+
 
     /**
      * @description (10) Enable Player to Reset the game
@@ -327,6 +338,7 @@
         MemoryGame.GameTimer(gameTimerState.start);
     }
 
+
     /**
      * @description Game timer
      * @see
@@ -347,6 +359,7 @@
             clearInterval(timerInterval);
         }
     }
+
 
     /**
      * @description Clears, Shuffles and Loads card deck.
