@@ -84,11 +84,13 @@
 
         switch (state) {
             case startButtonState.start:
+                startButton.textContent = 'Started';
                 startButton.classList.add('fa-play-circle-o');
                 startButton.classList.remove('fa-play-circle', 'fa-stop-circle');
                 break;
 
             case startButtonState.stop:
+                startButton.textContent = 'Stopped';
                 startButton.classList.add('fa-stop-circle');
                 startButton.classList.remove('fa-play-circle-o', 'fa-play-circle');
                 break;

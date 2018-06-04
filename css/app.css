@@ -126,18 +126,15 @@ h1 {
     font-size: 1.5em;
 }
 
-.score-panel .restart i,
-.score-panel .start i
-{
-    padding: 0;
-    margin: 0;
-}
-
 .score-panel .start {
     display: inline-block;
     cursor: pointer;
     font-size: 1.5em;
-    margin: 0 .5em;
+}
+
+.score-panel .start i::before,
+.score-panel .restart i::before {
+    margin: 0 .25em;
 }
 
 /*
