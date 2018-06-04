@@ -17,9 +17,20 @@
      * Global variables
      */
     const MemoryGame = {};
+    
     const startButtonState = {
         'start': 'start',
         'stop': 'stop'
+    };
+
+    const gameTimerState = {
+        'start': true,
+        'stop': false
+    };
+
+    const elementState = {
+        'hide': true,
+        'show': false
     };
 
     const cardsList = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-cube', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-paper-plane-o', 'fa-paper-plane-o'];
@@ -113,7 +124,7 @@
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Public functions
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     /**
      * @description Sets initial game features
      */
@@ -148,9 +159,8 @@
         MemoryGame.LoadCardDeck();
 
         // Starts Game Timer
-        MemoryGame.GameTimer(true);
+        MemoryGame.GameTimer(gameTimerState.start);
     }
-
 
     /**
      * @description (2) Display the card's symbol
@@ -273,10 +283,10 @@
 
         if (matchedCards.length === cardsList.length) {
             //Stops Game Timer
-            MemoryGame.GameTimer(false);
+            MemoryGame.GameTimer(gameTimerState.stop);
             startButtonChange(startButtonState.stop);
-            sectionHide(true, cardDeckGameboard);
-            sectionHide(false, finalScoreModal);
+            sectionHide(elementState.hide, cardDeckGameboard);
+            sectionHide(elementState.show, finalScoreModal);
 
             finalScoreMovesSpan.textContent = playerMovesCounter;
             finalScoreRatingSpan.innerHTML = document.querySelector('.stars').outerHTML;
@@ -292,8 +302,8 @@
         MemoryGame.LoadCardDeck();
 
         // Hides Final score modal
-        sectionHide(true, finalScoreModal);
-        sectionHide(false, cardDeckGameboard);
+        sectionHide(elementState.hide, finalScoreModal);
+        sectionHide(elementState.show, cardDeckGameboard);
         startButtonChange(startButtonState.start);
 
         //Resets Star ratings
@@ -311,7 +321,7 @@
         finalScoreRatingSpan.textContent = '';
 
         // Stops Game Timer
-        MemoryGame.GameTimer(false);
+        MemoryGame.GameTimer(gameTimerState.stop);
 
         // Reset Game Timer variables
         gameTimer = 0
@@ -321,7 +331,7 @@
         timerSecondsSpan.innerHTML = `00s`;
 
         // Restarts Game Timer
-        MemoryGame.GameTimer(true);
+        MemoryGame.GameTimer(gameTimerState.start);
     }
 
     /**
@@ -329,10 +339,10 @@
      * @see
      * https://www.w3schools.com/howto/howto_js_countdown.asp
      * https://stackoverflow.com/questions/10935026/how-to-clear-interval-and-set-it-again
-     * @param {boolean} runTimer Determines to run timer 
+     * @param {boolean} startTimer Determines to run timer
      */
-    MemoryGame.GameTimer = function (runTimer) {
-        if (runTimer) {
+    MemoryGame.GameTimer = function (startTimer) {
+        if (startTimer) {
             timerInterval = setInterval(function () {
                 gameTimer++;
                 timerMinutes = Math.floor((gameTimer / 60));
