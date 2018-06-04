@@ -17,7 +17,7 @@
      * Global variables
      */
     const MemoryGame = {};
-    
+
     const startButtonState = {
         'start': 'start',
         'stop': 'stop'
@@ -362,15 +362,15 @@
      *  https: //developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
      */
     MemoryGame.LoadCardDeck = function () {
-        //DEBUGGING
-        if (true) {
-            // Used for Debugging/Testing
-            const gameboardElements = document.querySelectorAll('.deck li');
-            gameboardElements.forEach(function (el) {
-                el.classList.remove('open', 'match', 'show');
-            });
-            return;
-        }
+        //DEBUGGING CODE
+        // if (true) {
+        //     // Used for Debugging/Testing
+        //     const gameboardElements = document.querySelectorAll('.deck li');
+        //     gameboardElements.forEach(function (el) {
+        //         el.classList.remove('open', 'match', 'show');
+        //     });
+        //     return;
+        // }
 
         // Clears card deck
         cardDeckGameboard.innerHTML = '';
