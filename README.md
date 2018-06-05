@@ -17,7 +17,7 @@
 ### Dependencies
 
 * Font awesome
-* Google Fonts (Comfortaa)
+* Google Fonts (Coda)
 
 ### Resources
 
