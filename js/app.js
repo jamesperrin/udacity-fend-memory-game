@@ -166,16 +166,18 @@
     /**
      * @description (2) Display the card's symbol
      * @param {Object} htmlElement
+     * @see: https: //developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
      */
-    MemoryGame.ShowCard = htmlElement => htmlElement.classList.add('open', 'show');
+    MemoryGame.ShowCard = htmlElement => htmlElement.classList.add('open', 'show', 'disabled');
 
 
     /**
      * @description Hides the card's symbol
      * @param {Object} htmlElement
+     * @see: https: //developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
      */
-    MemoryGame.HideCard = htmlElement => htmlElement.classList.remove('open', 'show');
-
+    MemoryGame.HideCard = htmlElement => htmlElement.classList.remove('open', 'show', 'disabled');
+    
 
     /**
      * @description (3) add the card to a * list * of "open" cards
