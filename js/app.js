@@ -21,7 +21,9 @@
         'show': false
     };
 
-    const cardsList = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bicycle', 'fa-bolt', 'fa-bolt', 'fa-bomb', 'fa-bomb', 'fa-cube', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-leaf', 'fa-leaf', 'fa-paper-plane-o', 'fa-paper-plane-o'];
+    // Based on Udacity's code reviewer's suggestion
+    const cards = ['fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-bomb', 'fa-cube', 'fa-diamond', 'fa-leaf', 'fa-paper-plane-o'];
+    const cardsList = cards.concat(cards);
     const cardDeckGameboard = document.querySelector('.deck');
     const finalScoreModal = document.querySelector('.final-score-modal');
     const finalScoreMovesSpan = document.querySelector('.final-score-moves span');
@@ -264,9 +266,6 @@
         } else if (playerMovesCounter === 18) { // 125%
             let secondStar = document.querySelector('ul.stars li:nth-child(2) i:nth-child(1)');
             StarRatingCounter(secondStar);
-        } else if (playerMovesCounter === 22) { // 175%
-            let thirdStar = document.querySelector('ul.stars li:nth-child(3) i:nth-child(1)');
-            StarRatingCounter(thirdStar);
         }
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
